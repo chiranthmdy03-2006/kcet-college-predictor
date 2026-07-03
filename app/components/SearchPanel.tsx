@@ -95,7 +95,10 @@ setTimeout(() => {
       style={{
         background: "white",
         borderRadius: "20px",
-        padding: "30px",
+        padding:
+  typeof window !== "undefined" && window.innerWidth < 768
+    ? "18px"
+    : "30px",
         boxShadow: "0 10px 30px rgba(0,0,0,.15)",
         marginBottom: "30px",
       }}
@@ -104,7 +107,10 @@ setTimeout(() => {
         style={{
           color: "#1e3a8a",
           marginBottom: "25px",
-          fontSize: "30px",
+          fontSize:
+  typeof window !== "undefined" && window.innerWidth < 768
+    ? "22px"
+    : "30px",
           fontWeight: "bold",
         }}
       >
@@ -119,7 +125,10 @@ setTimeout(() => {
   onKeyDown={handleKeyDown}
         style={{
           width: "100%",
-          padding: "15px",
+          padding:
+  typeof window !== "undefined" && window.innerWidth < 768
+    ? "12px"
+    : "15px",
           marginBottom: "20px",
           borderRadius: "10px",
           border: "1px solid #d1d5db",
@@ -139,7 +148,10 @@ setTimeout(() => {
 onKeyDown={handleKeyDown}
   style={{
     width: "100%",
-    padding: "15px",
+    padding:
+  typeof window !== "undefined" && window.innerWidth < 768
+    ? "12px"
+    : "15px",
     marginBottom: "20px",
     borderRadius: "10px",
     border: "1px solid #d1d5db",
@@ -156,19 +168,22 @@ onKeyDown={handleKeyDown}
   ))}
 </datalist>
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr",
-          gap: "15px",
-          marginBottom: "20px",
-        }}
-      >
+     <div
+  style={{
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
+    gap: "15px",
+    marginBottom: "20px",
+  }}
+>
         <select
           value={category}
           onChange={(e) => setCategory(e.target.value)}
           style={{
-            padding: "15px",
+            padding:
+  typeof window !== "undefined" && window.innerWidth < 768
+    ? "12px"
+    : "15px",
             borderRadius: "10px",
             border: "1px solid #d1d5db",
             background: "#ffffff",
@@ -191,7 +206,10 @@ onKeyDown={handleKeyDown}
           value={branch}
           onChange={(e) => setBranch(e.target.value)}
           style={{
-            padding: "15px",
+            padding:
+  typeof window !== "undefined" && window.innerWidth < 768
+    ? "12px"
+    : "15px",
             borderRadius: "10px",
             border: "1px solid #d1d5db",
             background: "#ffffff",

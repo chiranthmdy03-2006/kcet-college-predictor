@@ -5,7 +5,7 @@ export default function Header() {
         background: "linear-gradient(135deg,#2563eb,#1d4ed8)",
         color: "white",
         borderRadius: "20px",
-        padding: "40px",
+        padding: "clamp(20px, 5vw, 40px)",
         textAlign: "center",
         boxShadow: "0 15px 35px rgba(0,0,0,.25)",
         marginBottom: "30px",
@@ -13,9 +13,10 @@ export default function Header() {
     >
       <h1
         style={{
-          fontSize: "46px",
+          fontSize: "clamp(28px, 6vw, 46px)",
           margin: 0,
           fontWeight: "bold",
+          lineHeight: 1.2,
         }}
       >
         🎓 KCET College Predictor
@@ -23,9 +24,13 @@ export default function Header() {
 
       <p
         style={{
-          fontSize: "19px",
+          fontSize: "clamp(15px, 3vw, 19px)",
           marginTop: "15px",
           opacity: 0.95,
+          maxWidth: "700px",
+          marginLeft: "auto",
+          marginRight: "auto",
+          lineHeight: 1.6,
         }}
       >
         Find the Best Engineering Colleges using 2025 KCET Cutoffs
@@ -33,12 +38,13 @@ export default function Header() {
 
       <div
         style={{
-          marginTop: "25px",
+          marginTop: "22px",
           display: "inline-block",
-          background: "rgba(255,255,255,.15)",
+          background: "rgba(255,255,255,.18)",
           padding: "10px 20px",
           borderRadius: "999px",
-          fontSize: "15px",
+          fontSize: "clamp(13px, 2.5vw, 16px)",
+          fontWeight: 600,
         }}
       >
         ❤️ Designed & Developed by <b>Chiranth V</b>

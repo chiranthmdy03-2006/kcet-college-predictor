@@ -6,7 +6,7 @@ export default function Footer() {
         background: "#0f172a",
         color: "white",
         borderRadius: "20px",
-        padding: "30px",
+        padding: "20px",
         textAlign: "center",
         boxShadow: "0 10px 30px rgba(0,0,0,.2)",
       }}
