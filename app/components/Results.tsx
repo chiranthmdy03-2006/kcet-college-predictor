@@ -53,12 +53,33 @@ export default function Results({ results }: Props) {
             borderCollapse: "collapse",
           }}
         >
-          <thead>
-            <tr>
-              <th style={{ textAlign: "left", padding: "12px" }}>Branch</th>
-              <th style={{ textAlign: "left", padding: "12px" }}>Cutoff</th>
-            </tr>
-          </thead>
+         <thead>
+  <tr>
+    <th
+      style={{
+        textAlign: "left",
+        padding: "12px",
+        color: "#111827",
+        fontWeight: "700",
+        fontSize: "16px",
+      }}
+    >
+      🌿 Branch
+    </th>
+
+    <th
+      style={{
+        textAlign: "left",
+        padding: "12px",
+        color: "#111827",
+        fontWeight: "700",
+        fontSize: "16px",
+      }}
+    >
+      🎯 Cutoff
+    </th>
+  </tr>
+</thead>
 
           <tbody>
             {results.map((r, i) => (
