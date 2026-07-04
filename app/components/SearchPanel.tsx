@@ -194,7 +194,7 @@ setTimeout(() => {
           background: "#ffffff",
         }}
       />
-
+<div style={{ position: "relative" }}></div>
       <input
         type="text"
     
@@ -234,17 +234,18 @@ setTimeout(() => {
       />
 {suggestions.length > 0 && (
   <div
-    style={{
-      background: "#fff",
-      border: "1px solid #ddd",
-      borderRadius: "10px",
-      marginTop: "-10px",
-      marginBottom: "20px",
-      maxHeight: "220px",
-      overflowY: "auto",
-      boxShadow: "0 6px 18px rgba(0,0,0,.12)",
-    }}
-  >
+  style={{
+    position: "absolute",
+    width: "100%",
+    background: "#fff",
+    border: "1px solid #ddd",
+    borderRadius: "10px",
+    maxHeight: "220px",
+    overflowY: "auto",
+    boxShadow: "0 6px 18px rgba(0,0,0,.12)",
+    zIndex: 9999,
+  }}
+>
     {suggestions.map((college: any, index: number) => (
       <div
         key={index}
