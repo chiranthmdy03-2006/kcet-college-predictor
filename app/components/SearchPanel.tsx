@@ -234,17 +234,20 @@ setTimeout(() => {
       />
 {suggestions.length > 0 && (
   <div
-  style={{
-    position: "absolute",
-    width: "100%",
-    background: "#fff",
-    border: "1px solid #ddd",
-    borderRadius: "10px",
-    maxHeight: "220px",
-    overflowY: "auto",
-    boxShadow: "0 6px 18px rgba(0,0,0,.12)",
-    zIndex: 9999,
-  }}
+    style={{
+      position: "absolute",
+      top: "100%",
+      left: 0,
+      right: 0,
+      background: "#fff",
+      border: "1px solid #ddd",
+      borderRadius: "10px",
+      maxHeight: "220px",
+      overflowY: "auto",
+      boxShadow: "0 6px 18px rgba(0,0,0,.12)",
+      zIndex: 99999,
+    }}
+    
 >
     {suggestions.map((college: any, index: number) => (
       <div
@@ -263,7 +266,9 @@ setTimeout(() => {
       </div>
     ))}
   </div>
+  
 )}
+
 
       <div
         style={{
