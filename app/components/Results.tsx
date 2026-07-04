@@ -108,13 +108,13 @@ export default function Results({
   style={{
     margin: "8px 0",
     fontSize: "16px",
-    color: "#16a34a",
+    color: "#2563eb",
     fontWeight: "bold",
   }}
 >
-  ✅ Match: {r.match}%
+  📈 Difference: {r.difference > 0 ? "+" : ""}
+  {r.difference}
 </p>
-
               {"stars" in r && (
                 <div
                   style={{

@@ -36,8 +36,10 @@ const [suggestions, setSuggestions] = useState<any[]>([]);
   function predict() {
     setLoading(true);
 
+    
     const output: any[] = [];
-    const collegeCount: { [key: string]: number } = {};
+const bestColleges = new Map();
+const collegeCount: { [key: string]: number } = {};
 
     if (collegeSearch.trim() !== "") {
       colleges.forEach((college: any) => {
@@ -104,38 +106,37 @@ const score =
     ? difference
     : difference + 300;
 
-output.push({
+const item = {
   collegeCode: parts[0],
   collegeName: parts.slice(1).join(" "),
   branch: b.branch,
   cutoff,
   stars,
   difference: score,
-});
+};
 
-let match = 100 - (difference / 200);
+const key = parts[0];
 
-if (match < 50) match = 50;
+if (
+  !bestColleges.has(key) ||
+  item.difference < bestColleges.get(key).difference
+) {
+  bestColleges.set(key, item);
+}
 
-output.push({
-  collegeCode: parts[0],
-  collegeName: parts.slice(1).join(" "),
-  branch: b.branch,
-  cutoff,
-  stars,
-  difference,
-  match: Math.round(match),
-});
+
         }
       });
     });
 
-    output.sort((a, b) => a.difference - b.difference);
+   const finalResults = Array.from(bestColleges.values());
 
-    setTimeout(() => {
-      setResults(output.slice(0, 40));
-      setLoading(false);
-    }, 400);
+finalResults.sort((a: any, b: any) => a.difference - b.difference);
+
+setTimeout(() => {
+  setResults(finalResults.slice(0, 40));
+  setLoading(false);
+}, 400);
   }
 
   return (
