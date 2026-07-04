@@ -7,10 +7,10 @@ type Props = {
   };
 };
 
-export default function Results({
-  results,
-  searchInfo,
-}: Props) {
+export default function Results({ results }: Props) {
+  const collegeSearch =
+    results.length > 0 && results[0].isCollegeSearch;
+
   return (
     <div
       style={{
@@ -29,16 +29,10 @@ export default function Results({
           fontWeight: "bold",
         }}
       >
-        🎯 Predicted Colleges ({results.length})
-      </h2><p
-  style={{
-    color: "#64748b",
-    marginBottom: "20px",
-    fontSize: "15px",
-  }}
->
-  Showing the <b>{results.length}</b> closest colleges based on your KCET rank.
-</p>
+        {collegeSearch
+          ? `🏫 ${results[0]?.collegeName}`
+          : `🎯 Predicted Colleges (${results.length})`}
+      </h2>
 
       {results.length === 0 ? (
         <div
@@ -48,13 +42,52 @@ export default function Results({
             border: "2px dashed #cbd5e1",
             borderRadius: "15px",
             color: "#64748b",
-            fontSize: "17px",
           }}
         >
-          Enter your KCET Rank or College Name and click
-          <br />
-          <b>Predict Colleges</b>.
+          Enter your KCET Rank or College Name.
         </div>
+      ) : collegeSearch ? (
+        <table
+          style={{
+            width: "100%",
+            borderCollapse: "collapse",
+          }}
+        >
+          <thead>
+            <tr>
+              <th style={{ textAlign: "left", padding: "12px" }}>Branch</th>
+              <th style={{ textAlign: "left", padding: "12px" }}>Cutoff</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {results.map((r, i) => (
+              <tr key={i}>
+                <td
+                  style={{
+                    padding: "12px",
+                    borderTop: "1px solid #eee",
+                    color: "#111827",
+                    fontWeight: 600,
+                  }}
+                >
+                  {r.branch}
+                </td>
+
+                <td
+                  style={{
+                    padding: "12px",
+                    borderTop: "1px solid #eee",
+                    color: "#2563eb",
+                    fontWeight: "bold",
+                  }}
+                >
+                  {r.cutoff}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       ) : (
         <div
           style={{
@@ -67,7 +100,7 @@ export default function Results({
             <div
               key={index}
               style={{
-                background: "#ffffff",
+                background: "#fff",
                 border: "1px solid #dbe4f0",
                 borderRadius: "18px",
                 padding: "18px",
@@ -77,66 +110,20 @@ export default function Results({
               <h3
                 style={{
                   color: "#2563eb",
-                  fontSize: "20px",
                   fontWeight: "bold",
-                  lineHeight: "1.4",
-                  marginBottom: "15px",
-                  wordBreak: "break-word",
                 }}
               >
-                #{index + 1} 🏫{" "}
-                {r.collegeName.length > 70
-                  ? r.collegeName.substring(0, 70) + "..."
-                  : r.collegeName}
+                #{index + 1} 🏫 {r.collegeName}
               </h3>
 
-              <p
-                style={{
-                  margin: "8px 0",
-                  fontSize: "16px",
-                  color: "#111827",
-                }}
-              >
-                🏷️ <b>College Code:</b> {r.collegeCode}
-                <p
-  style={{
-    margin: "8px 0",
-    fontSize: "16px",
-    color: "#111827",
-  }}
->
-  👤 <b>Your Rank:</b> {r.yourRank}
-</p>
-              </p>
+              <p><b>College Code:</b> {r.collegeCode}</p>
+              <p><b>Branch:</b> {r.branch}</p>
+              <p><b>Your Rank:</b> {r.yourRank}</p>
+              <p><b>Cutoff:</b> {r.cutoff}</p>
+              <p><b>Difference:</b> {r.difference}</p>
 
-             <p
-  style={{
-    margin: "8px 0",
-    fontSize: "16px",
-    color: "#111827",
-  }}
->
-  🎯 <b>Cutoff Rank:</b> {r.cutoff}
-</p>
-
-             <p
-  style={{
-    margin: "8px 0",
-    fontSize: "16px",
-    color: "#2563eb",
-    fontWeight: "bold",
-  }}
->
-  📈 Difference: {r.difference > 0 ? "+" : ""}
-  {r.difference}
-</p>
               {"stars" in r && (
-                <div
-                  style={{
-                    marginTop: "15px",
-                    fontSize: "24px",
-                  }}
-                >
+                <div style={{ fontSize: "24px" }}>
                   {"⭐".repeat(r.stars)}
                 </div>
               )}

@@ -41,38 +41,31 @@ const [suggestions, setSuggestions] = useState<any[]>([]);
 const bestColleges = new Map();
 const collegeCount: { [key: string]: number } = {};
 
-    if (collegeSearch.trim() !== "") {
-      colleges.forEach((college: any) => {
-        if (
-          college.college
-            .toLowerCase()
-            .includes(collegeSearch.toLowerCase())
-        ) {
-          college.branches.forEach((b: any) => {
-           const parts = college.college.split(" ");
+   if (collegeSearch.trim() !== "") {
+  const selected = colleges.find((college: any) =>
+    college.college.toLowerCase() === collegeSearch.toLowerCase()
+  );
 
-const collegeCode = parts[0];
+  if (!selected) {
+    setResults([]);
+    setLoading(false);
+    return;
+  }
 
-if ((collegeCount[collegeCode] || 0) >= 2) {
+  const parts = selected.college.split(" ");
+
+  const output = selected.branches.map((b: any) => ({
+    collegeCode: parts[0],
+    collegeName: parts.slice(1).join(" "),
+    branch: b.branch,
+    cutoff: b[category],
+    isCollegeSearch: true,
+  }));
+
+  setResults(output);
+  setLoading(false);
   return;
 }
-
-collegeCount[collegeCode] = (collegeCount[collegeCode] || 0) + 1;
-
-output.push({
-              collegeCode: parts[0],
-              collegeName: parts.slice(1).join(" "),
-              branch: b.branch,
-              cutoff: b[category],
-            });
-          });
-        }
-      });
-
-      setResults(output);
-      setLoading(false);
-      return;
-    }
 
     const r = Number(rank);
 
