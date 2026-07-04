@@ -9,6 +9,11 @@ import Footer from "./components/Footer";
 
 export default function Home() {
   const [results, setResults] = useState<any[]>([]);
+  const [searchInfo, setSearchInfo] = useState({
+  rank: "",
+  category: "GM",
+  branch: "ALL",
+});
 
   return (
     <main
@@ -27,14 +32,15 @@ padding: "0 10px",
         }}
       >
         <Header />
+<SearchPanel
+  setResults={setResults}
+  setSearchInfo={setSearchInfo}
+/>
 
-        <SearchPanel
-          setResults={setResults}
-        />
-
-        <Results
-          results={results}
-        />
+<Results
+  results={results}
+  searchInfo={searchInfo}
+/>
 
         <Footer />
       </div>

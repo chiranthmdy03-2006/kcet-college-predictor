@@ -1,8 +1,16 @@
 type Props = {
   results: any[];
+  searchInfo: {
+    rank: string;
+    category: string;
+    branch: string;
+  };
 };
 
-export default function Results({ results }: Props) {
+export default function Results({
+  results,
+  searchInfo,
+}: Props) {
   return (
     <div
       style={{
@@ -96,15 +104,16 @@ export default function Results({ results }: Props) {
                 {r.branch}
               </p>
 
-              <p
-                style={{
-                  margin: "8px 0",
-                  fontSize: "16px",
-                  color: "#111827",
-                }}
-              >
-                📊 <b>Cutoff:</b> {r.cutoff}
-              </p>
+             <p
+  style={{
+    margin: "8px 0",
+    fontSize: "16px",
+    color: "#16a34a",
+    fontWeight: "bold",
+  }}
+>
+  ✅ Match: {r.match}%
+</p>
 
               {"stars" in r && (
                 <div

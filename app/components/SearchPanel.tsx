@@ -9,7 +9,8 @@ export default function SearchPanel({ setResults }: any) {
   const [branch, setBranch] = useState("ALL");
 
   const [colleges, setColleges] = useState<any[]>([]);
-  const [loading, setLoading] = useState(false);
+const [loading, setLoading] = useState(false);
+const [suggestions, setSuggestions] = useState<any[]>([]);
 
   useEffect(() => {
     fetch("/data/colleges.json")
@@ -36,6 +37,7 @@ export default function SearchPanel({ setResults }: any) {
     setLoading(true);
 
     const output: any[] = [];
+    const collegeCount: { [key: string]: number } = {};
 
     if (collegeSearch.trim() !== "") {
       colleges.forEach((college: any) => {
@@ -45,9 +47,17 @@ export default function SearchPanel({ setResults }: any) {
             .includes(collegeSearch.toLowerCase())
         ) {
           college.branches.forEach((b: any) => {
-            const parts = college.college.split(" ");
+           const parts = college.college.split(" ");
 
-            output.push({
+const collegeCode = parts[0];
+
+if ((collegeCount[collegeCode] || 0) >= 2) {
+  return;
+}
+
+collegeCount[collegeCode] = (collegeCount[collegeCode] || 0) + 1;
+
+output.push({
               collegeCode: parts[0],
               collegeName: parts.slice(1).join(" "),
               branch: b.branch,
@@ -70,7 +80,11 @@ export default function SearchPanel({ setResults }: any) {
 
         const cutoff = Number(b[category]);
 
-        if (!isNaN(cutoff) && cutoff >= r - 200) {
+       if (
+  !isNaN(cutoff) &&
+  cutoff >= r - 500 &&
+  cutoff <= r + 15000
+) {
           let stars = 5;
 
           const diff = cutoff - r;
@@ -82,14 +96,36 @@ export default function SearchPanel({ setResults }: any) {
 
           const parts = college.college.split(" ");
 
-          output.push({
-            collegeCode: parts[0],
-            collegeName: parts.slice(1).join(" "),
-            branch: b.branch,
-            cutoff,
-            stars,
-            difference: Math.abs(cutoff - r),
-          });
+         const difference = Math.abs(cutoff - r);
+
+// Small bonus if cutoff is just above the student's rank
+const score =
+  cutoff >= r
+    ? difference
+    : difference + 300;
+
+output.push({
+  collegeCode: parts[0],
+  collegeName: parts.slice(1).join(" "),
+  branch: b.branch,
+  cutoff,
+  stars,
+  difference: score,
+});
+
+let match = 100 - (difference / 200);
+
+if (match < 50) match = 50;
+
+output.push({
+  collegeCode: parts[0],
+  collegeName: parts.slice(1).join(" "),
+  branch: b.branch,
+  cutoff,
+  stars,
+  difference,
+  match: Math.round(match),
+});
         }
       });
     });
@@ -152,10 +188,26 @@ export default function SearchPanel({ setResults }: any) {
 
       <input
         type="text"
-        list="college-list"
+    
         placeholder="OR Search College Name"
         value={collegeSearch}
-        onChange={(e) => setCollegeSearch(e.target.value)}
+       onChange={(e) => {
+  const value = e.target.value;
+  setCollegeSearch(value);
+
+  if (value.length < 2) {
+    setSuggestions([]);
+    return;
+  }
+
+  const filtered = colleges
+    .filter((c: any) =>
+      c.college.toLowerCase().includes(value.toLowerCase())
+    )
+    .slice(0, 6);
+
+  setSuggestions(filtered);
+}}
         onKeyDown={handleKeyDown}
         style={{
           width: "100%",
@@ -171,15 +223,37 @@ export default function SearchPanel({ setResults }: any) {
           background: "#ffffff",
         }}
       />
-
-      <datalist id="college-list">
-        {colleges.map((college: any, index: number) => (
-          <option
-            key={index}
-            value={college.college.split(" ").slice(1).join(" ")}
-          />
-        ))}
-      </datalist>
+{suggestions.length > 0 && (
+  <div
+    style={{
+      background: "#fff",
+      border: "1px solid #ddd",
+      borderRadius: "10px",
+      marginTop: "-10px",
+      marginBottom: "20px",
+      maxHeight: "220px",
+      overflowY: "auto",
+      boxShadow: "0 6px 18px rgba(0,0,0,.12)",
+    }}
+  >
+    {suggestions.map((college: any, index: number) => (
+      <div
+        key={index}
+        onClick={() => {
+          setCollegeSearch(college.college);
+          setSuggestions([]);
+        }}
+        style={{
+          padding: "12px",
+          cursor: "pointer",
+          borderBottom: "1px solid #eee",
+        }}
+      >
+        🏫 {college.college}
+      </div>
+    ))}
+  </div>
+)}
 
       <div
         style={{
