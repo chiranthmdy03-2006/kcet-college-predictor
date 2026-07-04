@@ -243,21 +243,29 @@ setTimeout(() => {
       <div
         key={index}
         onClick={() => {
+      
           setCollegeSearch(college.college);
           setSuggestions([]);
         }}
+        onMouseEnter={(e) => {
+  e.currentTarget.style.background = "#eff6ff";
+}}
+
+onMouseLeave={(e) => {
+  e.currentTarget.style.background = "#ffffff";
+}}
         style={{
-          padding: "12px",
-          cursor: "pointer",
-          borderBottom: "1px solid #eee",
-          color: "#111827",
-
-    fontWeight: "600",
-
-    background: "#ffffff",
-        }}
+  padding: "12px",
+  cursor: "pointer",
+  borderBottom: "1px solid #eee",
+  color: "#111827",
+  fontWeight: "600",
+  background: "#ffffff",
+}}
       >
-        🏫 {college.college}
+        <span style={{ color: "#111827" }}>
+  🏫 {college.college}
+</span>
       </div>
     ))}
   </div>

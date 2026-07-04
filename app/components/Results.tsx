@@ -116,12 +116,25 @@ export default function Results({ results }: Props) {
                 #{index + 1} 🏫 {r.collegeName}
               </h3>
 
-              <p><b>College Code:</b> {r.collegeCode}</p>
-              <p><b>Branch:</b> {r.branch}</p>
-              <p><b>Your Rank:</b> {r.yourRank}</p>
-              <p><b>Cutoff:</b> {r.cutoff}</p>
-              <p><b>Difference:</b> {r.difference}</p>
+              <p style={{ color: "#111827", fontWeight: 500 }}>
+  🏷️ <b>College Code:</b> {r.collegeCode}
+</p>
 
+<p style={{ color: "#111827", fontWeight: 500 }}>
+  🌿 <b>Branch:</b> {r.branch}
+</p>
+
+<p style={{ color: "#111827", fontWeight: 500 }}>
+  👤 <b>Your Rank:</b> {r.yourRank}
+</p>
+
+<p style={{ color: "#16a34a", fontWeight: 600 }}>
+  🎯 <b>Cutoff:</b> {r.cutoff}
+</p>
+
+<p style={{ color: "#ea580c", fontWeight: 600 }}>
+  📈 <b>Difference:</b> {r.difference}
+</p>
               {"stars" in r && (
                 <div style={{ fontSize: "24px" }}>
                   {"⭐".repeat(r.stars)}
