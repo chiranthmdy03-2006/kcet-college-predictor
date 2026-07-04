@@ -358,7 +358,7 @@ setTimeout(() => {
             cursor: "pointer",
           }}
         >
-          {loading ? "🔄 Searching..." : "🔍 Predict Colleges"}
+          {loading ? "🔄 Searching..." : "✅ Submit"}
         </button>
 
         <button
