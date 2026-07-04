@@ -84,9 +84,8 @@ output.push({
 
        if (
   !isNaN(cutoff) &&
-  cutoff >= r - 500 &&
-  cutoff <= r + 15000
-) {
+  cutoff >= r - 500
+){
           let stars = 5;
 
           const diff = cutoff - r;
@@ -143,7 +142,7 @@ if (
 finalResults.sort((a: any, b: any) => a.difference - b.difference);
 
 setTimeout(() => {
-  setResults(finalResults.slice(0, 40));
+  setResults(finalResults.slice(0, 25));
   setLoading(false);
 }, 400);
   }

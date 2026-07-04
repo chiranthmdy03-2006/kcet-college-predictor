@@ -30,7 +30,15 @@ export default function Results({
         }}
       >
         🎯 Predicted Colleges ({results.length})
-      </h2>
+      </h2><p
+  style={{
+    color: "#64748b",
+    marginBottom: "20px",
+    fontSize: "15px",
+  }}
+>
+  Showing the <b>{results.length}</b> closest colleges based on your KCET rank.
+</p>
 
       {results.length === 0 ? (
         <div
