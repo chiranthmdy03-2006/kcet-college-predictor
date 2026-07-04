@@ -111,8 +111,10 @@ const item = {
   collegeName: parts.slice(1).join(" "),
   branch: b.branch,
   cutoff,
+  yourank: r,
   stars,
   difference: score,
+  
 };
 
 const key = parts[0];
