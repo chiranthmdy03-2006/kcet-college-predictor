@@ -90,19 +90,26 @@ export default function Results({
                 }}
               >
                 🏷️ <b>College Code:</b> {r.collegeCode}
+                <p
+  style={{
+    margin: "8px 0",
+    fontSize: "16px",
+    color: "#111827",
+  }}
+>
+  👤 <b>Your Rank:</b> {r.yourRank}
+</p>
               </p>
 
-              <p
-                style={{
-                  margin: "8px 0",
-                  fontSize: "16px",
-                  color: "#111827",
-                }}
-              >
-                🎓 <b>Branch:</b>
-                <br />
-                {r.branch}
-              </p>
+             <p
+  style={{
+    margin: "8px 0",
+    fontSize: "16px",
+    color: "#111827",
+  }}
+>
+  🎯 <b>Cutoff Rank:</b> {r.cutoff}
+</p>
 
              <p
   style={{

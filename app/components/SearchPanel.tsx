@@ -111,13 +111,20 @@ const item = {
   collegeName: parts.slice(1).join(" "),
   branch: b.branch,
   cutoff,
-  yourank: r,
+  yourRank: r,   // <-- exactly this spelling
   stars,
   difference: score,
-  
 };
+const collegeCode = parts[0];
 
-const key = parts[0];
+if ((collegeCount[collegeCode] || 0) >= 2) {
+  return;
+}
+
+collegeCount[collegeCode] =
+  (collegeCount[collegeCode] || 0) + 1;
+
+const key = collegeCode + "-" + b.branch;
 
 if (
   !bestColleges.has(key) ||
