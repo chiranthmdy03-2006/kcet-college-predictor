@@ -194,7 +194,7 @@ setTimeout(() => {
           background: "#ffffff",
         }}
       />
-<div style={{ position: "relative" }}></div>
+
       <input
         type="text"
     
@@ -235,17 +235,14 @@ setTimeout(() => {
 {suggestions.length > 0 && (
   <div
     style={{
-      position: "absolute",
-      top: "100%",
-      left: 0,
-      right: 0,
+     
       background: "#fff",
       border: "1px solid #ddd",
       borderRadius: "10px",
       maxHeight: "220px",
       overflowY: "auto",
       boxShadow: "0 6px 18px rgba(0,0,0,.12)",
-      zIndex: 99999,
+      
     }}
     
 >
@@ -260,6 +257,11 @@ setTimeout(() => {
           padding: "12px",
           cursor: "pointer",
           borderBottom: "1px solid #eee",
+          color: "#111827",
+
+    fontWeight: "600",
+
+    background: "#ffffff",
         }}
       >
         🏫 {college.college}
