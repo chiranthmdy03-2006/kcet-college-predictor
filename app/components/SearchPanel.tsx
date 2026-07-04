@@ -8,22 +8,33 @@ export default function SearchPanel({ setResults }: any) {
   const [category, setCategory] = useState("GM");
   const [branch, setBranch] = useState("ALL");
 
- const [colleges, setColleges] = useState<any[]>([]);
-const [loading, setLoading] = useState(false);
+  const [colleges, setColleges] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     fetch("/data/colleges.json")
       .then((res) => res.json())
       .then((data) => setColleges(data));
   }, []);
-  
+
+  function clearAll() {
+    setRank("");
+    setCollegeSearch("");
+    setCategory("GM");
+    setBranch("ALL");
+    setResults([]);
+    setLoading(false);
+  }
 
   function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
-  if (e.key === "Enter") {
-    predict();
+    if (e.key === "Enter") {
+      predict();
+    }
   }
-}
-  function predict()  { setLoading(true);
+
+  function predict() {
+    setLoading(true);
+
     const output: any[] = [];
 
     if (collegeSearch.trim() !== "") {
@@ -36,17 +47,18 @@ const [loading, setLoading] = useState(false);
           college.branches.forEach((b: any) => {
             const parts = college.college.split(" ");
 
-output.push({
-  collegeCode: parts[0],
-  collegeName: parts.slice(1).join(" "),
-  branch: b.branch,
-  cutoff: b[category],
-});
+            output.push({
+              collegeCode: parts[0],
+              collegeName: parts.slice(1).join(" "),
+              branch: b.branch,
+              cutoff: b[category],
+            });
           });
         }
       });
 
       setResults(output);
+      setLoading(false);
       return;
     }
 
@@ -58,7 +70,7 @@ output.push({
 
         const cutoff = Number(b[category]);
 
-        if (!isNaN(cutoff) && cutoff >= r) {
+        if (!isNaN(cutoff) && cutoff >= r - 200) {
           let stars = 5;
 
           const diff = cutoff - r;
@@ -70,24 +82,24 @@ output.push({
 
           const parts = college.college.split(" ");
 
-output.push({
-  collegeCode: parts[0],
-  collegeName: parts.slice(1).join(" "),
-  branch: b.branch,
-  cutoff,
-  stars,
-});
+          output.push({
+            collegeCode: parts[0],
+            collegeName: parts.slice(1).join(" "),
+            branch: b.branch,
+            cutoff,
+            stars,
+            difference: Math.abs(cutoff - r),
+          });
         }
       });
     });
 
-    output.sort((a, b) => a.cutoff - b.cutoff);
+    output.sort((a, b) => a.difference - b.difference);
 
-// Show only the best 20 colleges
-setTimeout(() => {
-  setResults(output.slice(0, 20));
-  setLoading(false);
-}, 400);
+    setTimeout(() => {
+      setResults(output.slice(0, 40));
+      setLoading(false);
+    }, 400);
   }
 
   return (
@@ -96,9 +108,9 @@ setTimeout(() => {
         background: "white",
         borderRadius: "20px",
         padding:
-  typeof window !== "undefined" && window.innerWidth < 768
-    ? "18px"
-    : "30px",
+          typeof window !== "undefined" && window.innerWidth < 768
+            ? "18px"
+            : "30px",
         boxShadow: "0 10px 30px rgba(0,0,0,.15)",
         marginBottom: "30px",
       }}
@@ -108,9 +120,9 @@ setTimeout(() => {
           color: "#1e3a8a",
           marginBottom: "25px",
           fontSize:
-  typeof window !== "undefined" && window.innerWidth < 768
-    ? "22px"
-    : "30px",
+            typeof window !== "undefined" && window.innerWidth < 768
+              ? "22px"
+              : "30px",
           fontWeight: "bold",
         }}
       >
@@ -118,17 +130,17 @@ setTimeout(() => {
       </h2>
 
       <input
-  type="number"
-  placeholder="Enter KCET Rank"
-  value={rank}
-  onChange={(e) => setRank(e.target.value)}
-  onKeyDown={handleKeyDown}
+        type="number"
+        placeholder="Enter KCET Rank"
+        value={rank}
+        onChange={(e) => setRank(e.target.value)}
+        onKeyDown={handleKeyDown}
         style={{
           width: "100%",
           padding:
-  typeof window !== "undefined" && window.innerWidth < 768
-    ? "12px"
-    : "15px",
+            typeof window !== "undefined" && window.innerWidth < 768
+              ? "12px"
+              : "15px",
           marginBottom: "20px",
           borderRadius: "10px",
           border: "1px solid #d1d5db",
@@ -139,57 +151,57 @@ setTimeout(() => {
       />
 
       <input
-      
-  type="text"
-  list="college-list"
-  placeholder="OR Search College Name"
-  value={collegeSearch}
-  onChange={(e) => setCollegeSearch(e.target.value)}
-onKeyDown={handleKeyDown}
-  style={{
-    width: "100%",
-    padding:
-  typeof window !== "undefined" && window.innerWidth < 768
-    ? "12px"
-    : "15px",
-    marginBottom: "20px",
-    borderRadius: "10px",
-    border: "1px solid #d1d5db",
-    fontSize: "17px",
-    color: "#111827",
-    background: "#ffffff",
-  }}
-/><datalist id="college-list">
-  {colleges.map((college: any, index: number) => (
-    <option
-      key={index}
-      value={college.college.split(" ").slice(1).join(" ")}
-    />
-  ))}
-</datalist>
+        type="text"
+        list="college-list"
+        placeholder="OR Search College Name"
+        value={collegeSearch}
+        onChange={(e) => setCollegeSearch(e.target.value)}
+        onKeyDown={handleKeyDown}
+        style={{
+          width: "100%",
+          padding:
+            typeof window !== "undefined" && window.innerWidth < 768
+              ? "12px"
+              : "15px",
+          marginBottom: "20px",
+          borderRadius: "10px",
+          border: "1px solid #d1d5db",
+          fontSize: "17px",
+          color: "#111827",
+          background: "#ffffff",
+        }}
+      />
 
-     <div
-  style={{
-    display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
-    gap: "15px",
-    marginBottom: "20px",
-  }}
->
+      <datalist id="college-list">
+        {colleges.map((college: any, index: number) => (
+          <option
+            key={index}
+            value={college.college.split(" ").slice(1).join(" ")}
+          />
+        ))}
+      </datalist>
+
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
+          gap: "15px",
+          marginBottom: "20px",
+        }}
+      >
         <select
           value={category}
           onChange={(e) => setCategory(e.target.value)}
           style={{
             padding:
-  typeof window !== "undefined" && window.innerWidth < 768
-    ? "12px"
-    : "15px",
+              typeof window !== "undefined" && window.innerWidth < 768
+                ? "12px"
+                : "15px",
             borderRadius: "10px",
             border: "1px solid #d1d5db",
             background: "#ffffff",
             color: "#111827",
             fontSize: "17px",
-            fontWeight: "500",
           }}
         >
           <option value="GM">GM</option>
@@ -207,15 +219,14 @@ onKeyDown={handleKeyDown}
           onChange={(e) => setBranch(e.target.value)}
           style={{
             padding:
-  typeof window !== "undefined" && window.innerWidth < 768
-    ? "12px"
-    : "15px",
+              typeof window !== "undefined" && window.innerWidth < 768
+                ? "12px"
+                : "15px",
             borderRadius: "10px",
             border: "1px solid #d1d5db",
             background: "#ffffff",
             color: "#111827",
             fontSize: "17px",
-            fontWeight: "500",
           }}
         >
           <option value="ALL">All Branches</option>
@@ -243,22 +254,45 @@ onKeyDown={handleKeyDown}
         </select>
       </div>
 
-      <button
-        onClick={predict}
+      <div
         style={{
-          width: "100%",
-          padding: "16px",
-          background: "#2563eb",
-          color: "white",
-          border: "none",
-          borderRadius: "12px",
-          fontSize: "18px",
-          fontWeight: "bold",
-          cursor: "pointer",
+          display: "flex",
+          gap: "10px",
         }}
       >
-        {loading ? "🔄 Searching..." : "🔍 Predict Colleges"}
-      </button>
+        <button
+          onClick={predict}
+          style={{
+            flex: 1,
+            padding: "16px",
+            background: "#2563eb",
+            color: "white",
+            border: "none",
+            borderRadius: "12px",
+            fontSize: "18px",
+            fontWeight: "bold",
+            cursor: "pointer",
+          }}
+        >
+          {loading ? "🔄 Searching..." : "🔍 Predict Colleges"}
+        </button>
+
+        <button
+          onClick={clearAll}
+          style={{
+            padding: "16px 22px",
+            background: "#ef4444",
+            color: "white",
+            border: "none",
+            borderRadius: "12px",
+            fontSize: "18px",
+            fontWeight: "bold",
+            cursor: "pointer",
+          }}
+        >
+          ❌ Clear
+        </button>
+      </div>
     </div>
   );
 }
