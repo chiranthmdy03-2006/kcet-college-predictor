@@ -12,6 +12,7 @@ export default function SearchPanel({ setResults }: any) {
 
   const [colleges, setColleges] = useState<any[]>([]);
 const [loading, setLoading] = useState(false);
+const [hasSearched, setHasSearched] = useState(false);
 const [suggestions, setSuggestions] = useState<any[]>([]);
 
   useEffect(() => {
@@ -36,6 +37,7 @@ const [suggestions, setSuggestions] = useState<any[]>([]);
   }
 
   function predict() {
+    setHasSearched(true);
     setLoading(true);
 
     

@@ -9,6 +9,7 @@ import Footer from "./components/Footer";
 
 export default function Home() {
   const [results, setResults] = useState<any[]>([]);
+  const [hasSearched, setHasSearched] = useState(false);
   const [searchInfo, setSearchInfo] = useState({
   rank: "",
   category: "GM",
@@ -33,14 +34,16 @@ padding: "0 10px",
       >
         <Header />
 <SearchPanel
-  setResults={setResults}
-  setSearchInfo={setSearchInfo}
+    setResults={setResults}
+    setSearchInfo={setSearchInfo}
+    setHasSearched={setHasSearched}
 />
-
-<Results
-  results={results}
-  searchInfo={searchInfo}
-/>
+{hasSearched && (
+  <Results
+      results={results}
+      searchInfo={searchInfo}
+  />
+)}
 
         <Footer />
       </div>
