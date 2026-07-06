@@ -74,8 +74,12 @@ const output = selected.branches
     isCollegeSearch: true,
   }));
 
-  setResults(output);
-  setLoading(false);
+ if (output.length === 0) {
+  alert("🔍 No colleges found. Please try another rank, branch, category or college name.");
+}
+
+setResults(output);
+setLoading(false);
   return;
 }
 
