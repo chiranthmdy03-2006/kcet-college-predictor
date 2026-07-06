@@ -10,6 +10,57 @@ type Props = {
 export default function Results({ results }: Props) {
   const collegeSearch =
     results.length > 0 && results[0].isCollegeSearch;
+    
+
+    if (results.length === 0) {
+  return (
+    <div
+      style={{
+        background: "#ffffff",
+        borderRadius: "20px",
+        padding: "50px",
+        marginTop: "30px",
+        textAlign: "center",
+        boxShadow: "0 10px 30px rgba(0,0,0,.15)",
+      }}
+    >
+      <div style={{ fontSize: "60px" }}>🔍</div>
+
+      <h2
+        style={{
+          color: "#1e3a8a",
+          marginTop: "10px",
+          marginBottom: "15px",
+        }}
+      >
+        Oops! No Colleges Found
+      </h2>
+
+      <p
+        style={{
+          color: "#666",
+          fontSize: "18px",
+          marginBottom: "20px",
+        }}
+      >
+        We couldn't find any colleges matching your search.
+      </p>
+
+      <div
+        style={{
+          color: "#555",
+          fontSize: "16px",
+          lineHeight: "1.8",
+        }}
+      >
+        ✅ Check your KCET Rank<br />
+        ✅ Try another Category<br />
+        ✅ Select a different Branch<br />
+        ✅ Search using another College Name
+      </div>
+    </div>
+  );
+}
 
   return (
     <div
