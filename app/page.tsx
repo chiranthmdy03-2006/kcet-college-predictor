@@ -38,12 +38,10 @@ padding: "0 10px",
     setSearchInfo={setSearchInfo}
     setHasSearched={setHasSearched}
 />
-{hasSearched && (
-  <Results
-      results={results}
-      searchInfo={searchInfo}
-  />
-)}
+<Results
+  results={results}
+  searchInfo={searchInfo}
+/>
 
         <Footer />
       </div>
