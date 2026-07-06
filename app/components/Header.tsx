@@ -33,7 +33,7 @@ export default function Header() {
           lineHeight: 1.6,
         }}
       >
-        Find the Best Engineering Colleges using 2025 KCET Cutoffs
+        Predict Your Best Engineering Colleges using Official 2026 KCET Mock Round Cutoffs
       </p>
 
       <div

@@ -1,12 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { SUPPORTED_BRANCHES } from "@/lib/supportedBranches";
 
 export default function SearchPanel({ setResults }: any) {
   const [rank, setRank] = useState("");
   const [collegeSearch, setCollegeSearch] = useState("");
   const [category, setCategory] = useState("GM");
   const [branch, setBranch] = useState("ALL");
+ 
 
   const [colleges, setColleges] = useState<any[]>([]);
 const [loading, setLoading] = useState(false);
@@ -54,11 +56,19 @@ const collegeCount: { [key: string]: number } = {};
 
   const parts = selected.college.split(" ");
 
-  const output = selected.branches.map((b: any) => ({
-    collegeCode: parts[0],
-    collegeName: parts.slice(1).join(" "),
+const output = selected.branches
+  .filter((b: any) => {
+    if (!SUPPORTED_BRANCHES.includes(b.branch)) return false;
+
+    if (branch !== "ALL" && b.branch !== branch) return false;
+
+    return true;
+  })
+  .map((b: any) => ({
+    collegeCode: selected.college.split(" ")[0],
+    collegeName: selected.college.split(" ").slice(1).join(" "),
     branch: b.branch,
-    cutoff: b[category],
+    cutoff: b[category] ?? "--",
     isCollegeSearch: true,
   }));
 
@@ -69,67 +79,60 @@ const collegeCount: { [key: string]: number } = {};
 
     const r = Number(rank);
 
-    colleges.forEach((college: any) => {
-      college.branches.forEach((b: any) => {
-        if (branch !== "ALL" && b.branch !== branch) return;
+  colleges.forEach((college: any) => {
 
-        const cutoff = Number(b[category]);
+  college.branches.forEach((b: any) => {
 
-       if (
-  !isNaN(cutoff) &&
-  cutoff >= r - 500
-){
-          let stars = 5;
+    if (!SUPPORTED_BRANCHES.includes(b.branch)) return;
 
-          const diff = cutoff - r;
+    if (branch !== "ALL" && b.branch !== branch) return;
+   
 
-          if (diff < 500) stars = 1;
-          else if (diff < 1500) stars = 2;
-          else if (diff < 3000) stars = 3;
-          else if (diff < 6000) stars = 4;
+    const cutoff = b[category];
 
-          const parts = college.college.split(" ");
+    if (cutoff == null) return;
 
-         const difference = Math.abs(cutoff - r);
+    if (cutoff >= r - 500) {
 
-// Small bonus if cutoff is just above the student's rank
-const score =
-  cutoff >= r
-    ? difference
-    : difference + 300;
+      let stars = 5;
 
-const item = {
-  collegeCode: parts[0],
-  collegeName: parts.slice(1).join(" "),
-  branch: b.branch,
-  cutoff,
-  yourRank: r,   // <-- exactly this spelling
-  stars,
-  difference: score,
-};
-const collegeCode = parts[0];
+      const diff = cutoff - r;
 
-if ((collegeCount[collegeCode] || 0) >= 2) {
-  return;
-}
+      if (diff < 500) stars = 1;
+      else if (diff < 1500) stars = 2;
+      else if (diff < 3000) stars = 3;
+      else if (diff < 6000) stars = 4;
 
-collegeCount[collegeCode] =
-  (collegeCount[collegeCode] || 0) + 1;
+      const parts = college.college.split(" ");
 
-const key = collegeCode + "-" + b.branch;
+      const difference = Math.abs(cutoff - r);
 
-if (
-  !bestColleges.has(key) ||
-  item.difference < bestColleges.get(key).difference
-) {
-  bestColleges.set(key, item);
-}
+      const score = cutoff >= r ? difference : difference + 300;
 
+      const item = {
+        collegeCode: parts[0],
+        collegeName: parts.slice(1).join(" "),
+        branch: b.branch,
+        cutoff,
+        yourRank: r,
+        stars,
+        difference: score,
+      };
 
-        }
-      });
-    });
+      const key = item.collegeCode + "-" + item.branch;
 
+      if (
+        !bestColleges.has(key) ||
+        item.difference < bestColleges.get(key).difference
+      ) {
+        bestColleges.set(key, item);
+      }
+
+    }
+
+  });
+
+});
    const finalResults = Array.from(bestColleges.values());
 
 finalResults.sort((a: any, b: any) => a.difference - b.difference);
@@ -191,7 +194,7 @@ setTimeout(() => {
       <input
         type="text"
     
-        placeholder="OR Search College Name"
+        placeholder="Search College Name or District..."
         value={collegeSearch}
        onChange={(e) => {
   const value = e.target.value;
@@ -296,14 +299,53 @@ onMouseLeave={(e) => {
             fontSize: "17px",
           }}
         >
-          <option value="GM">GM</option>
-          <option value="1G">1G</option>
-          <option value="2AG">2AG</option>
-          <option value="2BG">2BG</option>
-          <option value="3AG">3AG</option>
-          <option value="3BG">3BG</option>
-          <option value="SCG">SCG</option>
-          <option value="STG">STG</option>
+          
+         <option value="GM">GM</option>
+<option value="GMK">GMK</option>
+<option value="GMR">GMR</option>
+<option value="GMP">GMP</option>
+
+<option value="1G">1G</option>
+<option value="1K">1K</option>
+<option value="1R">1R</option>
+
+<option value="2AG">2AG</option>
+<option value="2AK">2AK</option>
+<option value="2AR">2AR</option>
+<option value="2BG">2BG</option>
+<option value="2BK">2BK</option>
+<option value="2BR">2BR</option>
+
+<option value="3AG">3AG</option>
+<option value="3AK">3AK</option>
+<option value="3AR">3AR</option>
+<option value="3BG">3BG</option>
+<option value="3BK">3BK</option>
+<option value="3BR">3BR</option>
+
+<option value="S1G">S1G</option>
+<option value="S1K">S1K</option>
+<option value="S1R">S1R</option>
+
+<option value="S2G">S2G</option>
+<option value="S2K">S2K</option>
+<option value="S2R">S2R</option>
+
+<option value="S3G">S3G</option>
+<option value="S3K">S3K</option>
+<option value="S3R">S3R</option>
+
+<option value="S4G">S4G</option>
+<option value="S4K">S4K</option>
+<option value="S4R">S4R</option>
+
+<option value="STG">STG</option>
+<option value="STK">STK</option>
+<option value="STR">STR</option>
+
+<option value="NRI">NRI</option>
+<option value="OPN">OPN</option>
+<option value="OTH">OTH</option>
         </select>
 
         <select
@@ -344,6 +386,8 @@ onMouseLeave={(e) => {
             Civil
           </option>
         </select>
+
+       
       </div>
 
       <div
